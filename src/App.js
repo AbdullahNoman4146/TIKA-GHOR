@@ -1,12 +1,17 @@
 import React from "react";
-import Navbar from "./Components/Navbar";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <h1>Welcome to Vaccine Management System</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<div>Login Page Placeholder</div>} />
+      </Routes>
+    </Router>
+
   );
 }
 
