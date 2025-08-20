@@ -1,6 +1,6 @@
 import React from "react";
 import "./HomePage.css";
-import logo from "../logo.svg";
+import logo from "./images/info.jpg";
 
 function HomePage() {
   return (
