@@ -1,0 +1,159 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+
+.home {
+  max-width: 1700px;
+  margin: auto;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  font-size: 22px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.nav-right button {
+  margin-left: 15px;
+  padding: 8px 14px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+}
+
+.info-image img {
+  width: 300px;
+}
+
+.info-text h1 {
+  font-size: 38px;
+  margin-bottom: 15px;
+}
+
+.info-text span {
+  color: #007bff;
+}
+
+.info-text p {
+  margin-bottom: 25px;
+  line-height: 1.6;
+  font-size: 16px;
+  max-width: 600px;
+}
+
+.learn-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+
+
+.booking {
+  padding: 60px 20px;
+  text-align: center;
+  background: #f9fbff;
+}
+
+.booking h2 {
+  margin-bottom: 30px;
+  font-size: 26px;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.step-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  width: 280px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.notices {
+  padding: 60px 20px;
+}
+
+.notices h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+}
+
+.notice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.notice {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+
+.notice h4 {
+  color: #777;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.notice b {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+
+.footer {
+  text-align: center;
+  padding: 25px;
+  border-top: 1px solid #ddd;
+  margin-top: 50px;
+  font-size: 14px;
+  color: #555;
+  background: #f8f9fa;
+}
