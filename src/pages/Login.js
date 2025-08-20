@@ -1,13 +1,13 @@
 import React from "react";
 import "./Login.css";
-import { useNavigate } from "react-router-dom"; // ✅ import
+import { useNavigate } from "react-router-dom"; 
 
 function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // later you’ll add authentication here
-    navigate("/profile"); // ✅ redirect after login
+    
+    navigate("/profile"); 
   };
 
   return (
@@ -18,8 +18,8 @@ function Login() {
           src="https://img.freepik.com/free-vector/doctors-concept-illustration_114360-1515.jpg"
           alt="Doctors"
         />
-        <h2>Welcome to TIKA GHOR</h2>
-        <p>Please log in to continue</p>
+        <h2>WELCOME TO TIKA GHOR</h2>
+        <p>Please login to continue</p>
 
         <form>
           <div className="form-group">
@@ -39,7 +39,7 @@ function Login() {
             <a href="#">Forgot Password?</a>
           </div>
 
-          {/* ✅ change onClick to handleLogin */}
+          
           <button type="button" className="btn-login" onClick={handleLogin}>
             Log In
           </button>
@@ -48,9 +48,9 @@ function Login() {
             <label>Role</label>
             <select>
               <option value="">Select role</option>
-              <option value="doctor">Doctor</option>
-              <option value="patient">Patient</option>
-              <option value="admin">Admin</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Patient">Patient</option>
+              <option value="Admin">Admin</option>
             </select>
           </div>
         </form>
@@ -59,7 +59,7 @@ function Login() {
           Sign Up
         </button>
 
-        <div className="back-home">
+        <div className="Back-Home">
           <a href="#">Back to Home</a>
         </div>
       </div>
