@@ -1,7 +1,15 @@
 import React from "react";
 import "./Login.css";
+import { useNavigate } from "react-router-dom"; // ✅ import
 
 function Login() {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    // later you’ll add authentication here
+    navigate("/profile"); // ✅ redirect after login
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -31,7 +39,8 @@ function Login() {
             <a href="#">Forgot Password?</a>
           </div>
 
-          <button type="button" className="btn-login">
+          {/* ✅ change onClick to handleLogin */}
+          <button type="button" className="btn-login" onClick={handleLogin}>
             Log In
           </button>
 
