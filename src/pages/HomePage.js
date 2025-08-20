@@ -1,15 +1,16 @@
 import React from "react";
 import "./HomePage.css";
 import logo from "./images/info.jpg";
+import { useNavigate } from "react-router-dom"; 
 
 function HomePage() {
+  const navigate = useNavigate();
   return (
     <div className="home">
-      
       <nav className="navbar">
         <div className="nav-left">TIKA GHOR</div>
         <div className="nav-right">
-          <button onClick={() => { /* place */ }}>Login</button>
+          <button onClick={() => navigate("/login")}>Login</button>
           <button onClick={() => { /* place */ }}>Notice Panel</button>
           <button onClick={() => { /* place */ }}>Vaccine Information</button>
           <button onClick={() => { /* place */ }}>Applicable Vaccine</button>
