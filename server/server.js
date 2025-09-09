@@ -16,4 +16,4 @@ app.use(express.json());
 app.use('/api/user', router);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`server running on port ${PORT}`)); // ✅ fixed
+app.listen(PORT, () => console.log(`server running on port ${PORT}`));
