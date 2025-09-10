@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
+  const [role, setRole] = useState(""); // track selected role
 
   const handleLogin = () => {
-
-    navigate("/profile");
+    if (role === "Hospital") {
+      navigate("/hospital");
+    } else if (role === "Patient") {
+      navigate("/profile");
+    } else if (role === "Admin") {
+      navigate("/admin");
+    } else {
+      alert("⚠️ Please select a role before logging in");
+    }
   };
 
   return (
@@ -39,16 +47,15 @@ function Login() {
             <a href="#">Forgot Password?</a>
           </div>
 
-
           <button type="button" className="btn-login" onClick={handleLogin}>
             Log In
           </button>
 
           <div className="form-group">
             <label>Role</label>
-            <select>
+            <select value={role} onChange={(e) => setRole(e.target.value)}>
               <option value="">Select role</option>
-              <option value="Doctor">Doctor</option>
+              <option value="Hospital">Hospital</option>
               <option value="Patient">Patient</option>
               <option value="Admin">Admin</option>
             </select>
@@ -62,7 +69,6 @@ function Login() {
         >
           Sign Up
         </button>
-
 
         <div className="Back-Home">
           <a href="#">Back to Home</a>
