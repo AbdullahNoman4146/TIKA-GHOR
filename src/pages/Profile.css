@@ -1,0 +1,158 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f6fa;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    width: 220px;
+    background: #0b1a3d;
+    color: #fff;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #87ceeb;
+    letter-spacing: 1px;
+}
+
+.navList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.navItem {
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.navItemActive {
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: bold;
+    color: #87ceeb;
+}
+
+.main {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.profileCard {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profilePic {
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.sectionTitle {
+    margin-bottom: 15px;
+    color: #0b1a3d;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.subText {
+    margin: 3px 0;
+    color: #555;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #444;
+}
+
+.inputStyle {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.btnPrimary {
+    padding: 10px 22px;
+    background-color: #0b1a3d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.btnPrimary:hover {
+    background-color: #162a5f;
+}
+
+.btnSecondary {
+    padding: 10px 22px;
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.tableStyle {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tableStyle th,
+.tableStyle td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.centerCard {
+    text-align: center;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    color: #0b1a3d;
+}

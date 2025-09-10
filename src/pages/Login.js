@@ -1,20 +1,43 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
-  const [role, setRole] = useState(""); // track selected role
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (role === "Hospital") {
-      navigate("/hospital");
-    } else if (role === "Patient") {
-      navigate("/profile");
-    } else if (role === "Admin") {
-      navigate("/admin");
-    } else {
-      alert("⚠️ Please select a role before logging in");
+  const handleLogin = async () => {
+    if (!email || !password || !role) {
+      alert("⚠️ Please fill in all fields and select a role");
+      return;
+    }
+
+    try {
+      // 🔹 Call backend to check credentials
+      const res = await axios.post("http://localhost:5000/api/user/login", {
+        email,
+        password,
+      });
+
+      if (res.data) {
+        // ✅ Save user email in localStorage
+        localStorage.setItem("userEmail", res.data.email);
+
+        // 🔹 Navigate based on role
+        if (role === "Hospital") {
+          navigate("/hospital");
+        } else if (role === "Patient") {
+          navigate("/profile");
+        } else if (role === "Admin") {
+          navigate("/admin");
+        }
+      }
+    } catch (error) {
+      console.error("❌ Login error:", error);
+      alert("Invalid email or password");
     }
   };
 
@@ -31,13 +54,23 @@ function Login() {
 
         <form>
           <div className="form-group">
-            <label>Email or Username</label>
-            <input type="text" placeholder="Enter your email or username" />
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <input type="password" placeholder="Enter your password" />
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
           <div className="form-options">
