@@ -156,3 +156,22 @@
     font-size: 18px;
     color: #0b1a3d;
 }
+
+/* Logout button inside sidebar */
+.btnLogout {
+    background: #fff;
+    color: #0b1a3d;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+
+.btnLogout:hover {
+    background: #87ceeb;
+    color: #fff;
+}

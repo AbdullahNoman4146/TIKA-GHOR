@@ -5,13 +5,12 @@ import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    if (!email || !password || !role) {
-      alert("⚠️ Please fill in all fields and select a role");
+    if (!email || !password) {
+      alert("⚠️ Please fill in all fields");
       return;
     }
 
@@ -26,12 +25,12 @@ function Login() {
         // ✅ Save user email in localStorage
         localStorage.setItem("userEmail", res.data.email);
 
-        // 🔹 Navigate based on role
-        if (role === "Hospital") {
+        // 🔹 Navigate based on backend role
+        if (res.data.role === "Hospital") {
           navigate("/hospital");
-        } else if (role === "Patient") {
+        } else if (res.data.role === "Patient") {
           navigate("/profile");
-        } else if (role === "Admin") {
+        } else if (res.data.role === "Admin") {
           navigate("/admin");
         }
       }
@@ -83,16 +82,6 @@ function Login() {
           <button type="button" className="btn-login" onClick={handleLogin}>
             Log In
           </button>
-
-          <div className="form-group">
-            <label>Role</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="">Select role</option>
-              <option value="Hospital">Hospital</option>
-              <option value="Patient">Patient</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
         </form>
 
         <button

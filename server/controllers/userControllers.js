@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 
-// ✅ Get all users
+//Get all users
 export const getUser = async (req, res) => {
     try {
         const users = await User.find();
@@ -10,7 +10,7 @@ export const getUser = async (req, res) => {
     }
 };
 
-// ✅ Create new user
+//Create new user (Patient signup)
 export const newUser = async (req, res) => {
     try {
         console.log("📩 Received body:", req.body);
@@ -26,7 +26,7 @@ export const newUser = async (req, res) => {
     }
 };
 
-// ✅ Get single user by email
+//Get single user by email
 export const getUserByEmail = async (req, res) => {
     try {
         const email = req.params.email;
@@ -43,11 +43,31 @@ export const getUserByEmail = async (req, res) => {
     }
 };
 
-// ✅ Login user (check email + password)
+//Login user (Admin / Hospital / Patient)
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        // 🔹 Predefined Hospital & Admin accounts
+        const specialAccounts = {
+            "hospital@tikaghor.com": { password: "hospital123", role: "Hospital" },
+            "admin@tikaghor.com": { password: "admin123", role: "Admin" }
+        };
+
+        // Hospital / Admin login
+        if (specialAccounts[email]) {
+            if (specialAccounts[email].password === password) {
+                return res.status(200).json({
+                    message: "Login successful",
+                    role: specialAccounts[email].role,
+                    email
+                });
+            } else {
+                return res.status(401).json({ message: "Invalid password" });
+            }
+        }
+
+        //Otherwise, check in database for Patients
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -58,11 +78,11 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Invalid password" });
         }
 
-        // ✅ Only send safe data (not password)
-        res.json({
+        res.status(200).json({
+            message: "Login successful",
+            role: "Patient",
             email: user.email,
             name: user.name,
-            role: req.body.role || "Patient", // fallback role
         });
     } catch (error) {
         console.error("❌ Error logging in:", error);

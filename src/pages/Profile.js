@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profile.css";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -25,6 +27,11 @@ function Profile() {
       });
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("userEmail");
+    navigate("/login");
+  };
+
   if (loading) return <h2 className="loading">Loading...</h2>;
   if (!user) return <h2 className="loading">No user found</h2>;
 
@@ -33,6 +40,12 @@ function Profile() {
       {/* Sidebar */}
       <aside className="sidebar">
         <h2 className="logo">TIKA GHOR</h2>
+
+        {/*Logout button in sidebar */}
+        <button className="btnLogout" onClick={handleLogout}>
+          🚪 Logout
+        </button>
+
         <nav>
           <ul className="navList">
             <li className="navItemActive">🏠 Dashboard</li>
