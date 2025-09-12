@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 
 function Signup() {
@@ -24,6 +25,8 @@ function Signup() {
     const [errors, setErrors] = useState({});
     const [successMsg, setSuccessMsg] = useState("");
     const [serverError, setServerError] = useState("");
+
+    const navigate = useNavigate();
 
     // Location data (Division → District → Thana → Post Office)
     const locationData = {
@@ -168,6 +171,9 @@ function Signup() {
                 const res = await axios.post("http://localhost:5000/api/user", formData);
                 console.log("✅ User saved:", res.data);
                 setSuccessMsg("Signup successful!");
+
+                alert("Signup successful! Redirecting to login...");
+                navigate("/login");
             } catch (error) {
                 if (error.response && error.response.data.message) {
                     setServerError(error.response.data.message);
