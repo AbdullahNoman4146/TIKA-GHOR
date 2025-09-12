@@ -1,6 +1,7 @@
+//hospitalController.js
 import Hospital from "../models/Hospital.js";
 
-// ✅ Get hospital info by email
+// Get hospital info by email
 export const getHospital = async (req, res) => {
     try {
         const { email } = req.params;
@@ -16,7 +17,7 @@ export const getHospital = async (req, res) => {
     }
 };
 
-// ✅ Save or Update hospital info
+//Save or Update hospital info
 export const saveHospital = async (req, res) => {
     try {
         const { email } = req.body;
