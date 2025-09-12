@@ -15,28 +15,42 @@ function Login() {
     }
 
     try {
-      // 🔹 Call backend to check credentials
+      //Call backend for login
       const res = await axios.post("http://localhost:5000/api/user/login", {
         email,
         password,
       });
 
       if (res.data) {
-        // ✅ Save user email in localStorage
-        localStorage.setItem("userEmail", res.data.email);
+        const { email, role, name } = res.data;
+
+        //Save user details in localStorage
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userRole", role);
+        if (name) localStorage.setItem("userName", name);
 
         // 🔹 Navigate based on backend role
-        if (res.data.role === "Hospital") {
-          navigate("/hospital");
-        } else if (res.data.role === "Patient") {
-          navigate("/profile");
-        } else if (res.data.role === "Admin") {
-          navigate("/admin");
+        switch (role) {
+          case "Admin":
+            navigate("/admin");
+            break;
+          case "Hospital":
+            navigate("/hospital");
+            break;
+          case "Patient":
+            navigate("/profile");
+            break;
+          default:
+            navigate("/");
         }
       }
     } catch (error) {
       console.error("❌ Login error:", error);
-      alert("Invalid email or password");
+      if (error.response?.data?.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Invalid email or password");
+      }
     }
   };
 
@@ -93,7 +107,7 @@ function Login() {
         </button>
 
         <div className="Back-Home">
-          <a href="#">Back to Home</a>
+          <a href="/">Back to Home</a>
         </div>
       </div>
     </div>
