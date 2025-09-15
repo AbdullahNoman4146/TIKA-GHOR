@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-
 body {
   margin: 0;
   font-family: "Nunito Sans", sans-serif;
@@ -12,7 +11,6 @@ body {
   max-width: 1700px;
   margin: auto;
 }
-
 
 .navbar {
   display: flex;
@@ -44,12 +42,10 @@ body {
   transition: 0.3s ease;
 }
 
-
 .nav-right button:hover {
   background: #0056b3;
   transform: scale(1.05);
 }
-
 
 .info {
   display: flex;
@@ -65,10 +61,6 @@ body {
   max-width: 320px;
   height: auto;
   border-radius: 12px;
-}
-.hero-text {
-  flex: 1;
-  min-width: 300px;
 }
 
 .info-text h1 {
@@ -123,11 +115,12 @@ body {
 
 .step-card {
   background: white;
-  padding: 20px;
+  padding: 25px 20px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   width: 280px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
 }
 
 .step-card:hover {
@@ -135,27 +128,53 @@ body {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
+.step-card h3 {
+  color: #2c3e50;
+  margin-top: 0;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.step-card p {
+  color: #34495e;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Notice section styles - Wider and full width */
 .notices {
   padding: 60px 20px;
+  text-align: center;
+  background: #f9fbff;
 }
 
 .notices h2 {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   font-size: 26px;
 }
 
 .notice-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 25px;
+  margin: 30px 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .notice {
   background: white;
-  padding: 20px;
+  padding: 30px 25px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  transition: 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .notice:hover {
@@ -164,24 +183,144 @@ body {
 }
 
 .notice h4 {
-  color: #777;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .notice b {
+  color: #2c3e50;
+  font-size: 1.2rem;
   display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
+  margin-bottom: 15px;
+  line-height: 1.4;
 }
 
+.notice p {
+  color: #34495e;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
 
+.notice-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #ecf0f1;
+}
+
+.notice-footer span {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.read-more-btn {
+  background: none;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.read-more-btn:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.view-all-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.view-all-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+.notice-loading {
+  text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
+  width: 100%;
+}
+
+.no-notices-available {
+  text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
+  width: 100%;
+}
+
+/* Footer style */
 .footer {
   text-align: center;
-  padding: 25px;
-  border-top: 1px solid #ddd;
-  margin-top: 50px;
-  font-size: 14px;
-  color: #555;
+  padding: 30px 20px;
   background: #f8f9fa;
+  color: #333;
+  margin-top: 40px;
+  border-top: 1px solid #e9ecef;
+}
+
+.footer p {
+  margin: 5px 0;
+  color: #6c757d;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .nav-right {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .nav-right button {
+    margin: 5px;
+  }
+  
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .step-card {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  /* Responsive design for notices */
+  .notice-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .notice {
+    padding: 25px 20px;
+    min-height: auto;
+  }
 }
