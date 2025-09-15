@@ -60,9 +60,9 @@ function NoticePanel() {
             <div key={notice._id} className="notice-card">
               <h3>📌 {notice.title}</h3>
               <p className="notice-content">{notice.content}</p>
-              <div className="notice-meta">
-                <span>Posted by: <strong>{notice.author}</strong></span>
-                <span className="notice-date">
+              <div className="notice-meta-fixed">
+                <span className="notice-author">Posted by: <strong>{notice.author}</strong></span>
+                <span className="notice-date-right">
                   {new Date(notice.date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
