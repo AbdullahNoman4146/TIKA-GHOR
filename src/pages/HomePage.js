@@ -33,7 +33,7 @@ function HomePage() {
         <div className="nav-right">
           <button onClick={() => navigate("/login")}>Login</button>
           <button onClick={() => navigate("/notices")}>Notice Panel</button>
-          <button onClick={() => { /* place */ }}>Vaccine Information</button>
+          <button onClick={() => navigate("/vaccine-info")}>Vaccine Information</button>
           <button onClick={() => { /* place */ }}>Applicable Vaccine</button>
           <button onClick={() => { /* place */ }}>Vaccine Card Download</button>
         </div>
@@ -73,51 +73,53 @@ function HomePage() {
           </div>
         </div>
       </section>
-<section className="notices">
-  <h2>Recent Notices</h2>
-  <div className="notice-grid">
-    {loading ? (
-      <div className="notice-loading">Loading notices...</div>
-    ) : notices.length === 0 ? (
-      <div className="no-notices-available">
-        <p>No notices available at the moment.</p>
-      </div>
-    ) : (
-      notices.map((notice, index) => (
-        <div key={notice._id || index} className="notice">
-          <h4>
-            {index === 0 ? "🚨 Latest Update" : 
-             index === 1 ? "📋 Important" : "ℹ️ Information"}
-          </h4>
-          <b>{notice.title}</b>
-          <p>
-            {notice.content.length > 100 
-              ? `${notice.content.substring(0, 100)}...` 
-              : notice.content
-            }
-          </p>
-          <div className="notice-footer">
-            <span>By: {notice.author}</span>
-            <button 
-              onClick={() => navigate("/notices")}
-              className="read-more-btn"
-            >
-              Read More
-            </button>
-          </div>
+
+      <section className="notices">
+        <h2>Recent Notices</h2>
+        <div className="notice-grid">
+          {loading ? (
+            <div className="notice-loading">Loading notices...</div>
+          ) : notices.length === 0 ? (
+            <div className="no-notices-available">
+              <p>No notices available at the moment.</p>
+            </div>
+          ) : (
+            notices.map((notice, index) => (
+              <div key={notice._id || index} className="notice">
+                <h4>
+                  {index === 0 ? "🚨 Latest Update" : 
+                   index === 1 ? "📋 Important" : "ℹ️ Information"}
+                </h4>
+                <b>{notice.title}</b>
+                <p>
+                  {notice.content.length > 100 
+                    ? `${notice.content.substring(0, 100)}...` 
+                    : notice.content
+                  }
+                </p>
+                <div className="notice-footer">
+                  <span>By: {notice.author}</span>
+                  <button 
+                    onClick={() => navigate("/notices")}
+                    className="read-more-btn"
+                  >
+                    Read More
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-      ))
-    )}
-  </div>
-  <div className="view-all-container">
-    <button 
-      onClick={() => navigate("/notices")}
-      className="view-all-btn"
-    >
-      View All Notices
-    </button>
-  </div>
-</section>
+        <div className="view-all-container">
+          <button 
+            onClick={() => navigate("/notices")}
+            className="view-all-btn"
+          >
+            View All Notices
+          </button>
+        </div>
+      </section>
+
       <footer className="footer">
         <p> Contact Us: 106 &nbsp; | &nbsp; Emergency: 999 &nbsp; | &nbsp; Health Information: 16263 </p>
         <p>© 2024 Ministry of Health and Family Welfare. All rights reserved.</p>
