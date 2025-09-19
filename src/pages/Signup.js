@@ -129,10 +129,11 @@ function Signup() {
         }
 
         // 6. Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[^\s@]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/i;
         if (!emailRegex.test(formData.email)) {
-            newErrors.email = "Please enter a valid email address.";
+            newErrors.email = "Please enter a valid Gmail, Yahoo, Outlook, or Hotmail address.";
         }
+
 
         // 7. No blank input check for required fields
         const requiredFields = [
