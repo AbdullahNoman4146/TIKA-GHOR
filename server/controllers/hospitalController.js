@@ -1,40 +1,67 @@
-//hospitalController.js
 import Hospital from "../models/Hospital.js";
+import bcrypt from "bcrypt";
 
-// Get hospital info by email
-export const getHospital = async (req, res) => {
+// Get all hospitals (exclude admin)
+export const getAllHospitals = async (req, res) => {
     try {
-        const { email } = req.params;
-        const hospital = await Hospital.findOne({ email });
-
-        if (!hospital) {
-            return res.status(200).json(null); // No data yet
-        }
-
-        res.json(hospital);
+        const hospitals = await Hospital.find({ email: { $ne: "admin@tikaghor.com" } });
+        res.status(200).json(hospitals);
     } catch (err) {
+        console.error("❌ Error fetching hospitals:", err);
         res.status(500).json({ message: err.message });
     }
 };
 
-//Save or Update hospital info
+// Get hospital info by email (admin won't exist in DB)
+export const getHospital = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        // If admin email requested, return null
+        if (email === "admin@tikaghor.com") {
+            return res.status(200).json(null);
+        }
+
+        const hospital = await Hospital.findOne({ email });
+        res.json(hospital);
+    } catch (err) {
+        console.error("❌ Error fetching hospital:", err);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Save or update hospital
 export const saveHospital = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, password } = req.body;
+
+        // 🔹 Block creating admin as hospital
+        if (email === "admin@tikaghor.com") {
+            return res.status(403).json({ message: "Cannot create admin in hospitals" });
+        }
 
         let hospital = await Hospital.findOne({ email });
+
         if (hospital) {
-            // update existing
-            hospital.set(req.body);
+            // Update existing hospital
+            let hashedPassword = hospital.password;
+
+            if (password && !(await bcrypt.compare(password, hospital.password))) {
+                hashedPassword = await bcrypt.hash(password, 10);
+            }
+
+            hospital.set({ ...req.body, password: hashedPassword });
             await hospital.save();
         } else {
-            // create new
-            hospital = new Hospital(req.body);
+            // Create new hospital
+            const hashedPassword = await bcrypt.hash(password, 10);
+            hospital = new Hospital({ ...req.body, password: hashedPassword });
             await hospital.save();
         }
 
         res.status(200).json(hospital);
     } catch (err) {
+        console.error("❌ Error saving hospital:", err);
         res.status(500).json({ message: err.message });
     }
 };

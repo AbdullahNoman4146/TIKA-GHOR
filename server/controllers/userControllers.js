@@ -1,5 +1,6 @@
 import User from "../models/User.js";
-import Hospital from "../models/Hospital.js"; // ✅ Import Hospital model
+import Hospital from "../models/Hospital.js";
+import bcrypt from "bcrypt";
 
 // Get all users
 export const getUser = async (req, res) => {
@@ -14,32 +15,26 @@ export const getUser = async (req, res) => {
 // Create new user (Patient signup)
 export const newUser = async (req, res) => {
     try {
-        console.log("📩 Received body:", req.body);
-        const user = new User(req.body);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const user = new User({ ...req.body, password: hashedPassword });
         await user.save();
         res.status(201).json(user);
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ message: "Email already exists" });
         }
-        console.error("❌ Error saving user:", error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// Get single user by email
+// Get user by email
 export const getUserByEmail = async (req, res) => {
     try {
         const email = req.params.email;
         const user = await User.findOne({ email });
-
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
+        if (!user) return res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (error) {
-        console.error("❌ Error fetching user:", error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -49,8 +44,11 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // 🔹 Predefined Admin account
-        if (email === "admin@tikaghor.com" && password === "admin123") {
+        // 🔹 Admin login using env variables at runtime
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPassword = process.env.ADMIN_PASSWORD;
+
+        if (email === adminEmail && password === adminPassword) {
             return res.status(200).json({
                 message: "Login successful",
                 role: "Admin",
@@ -58,10 +56,11 @@ export const loginUser = async (req, res) => {
             });
         }
 
-        // 🔹 Hospital login (check Hospital collection)
+        // Hospital login
         const hospital = await Hospital.findOne({ email });
         if (hospital) {
-            if (hospital.password === password) {
+            const isMatch = await bcrypt.compare(password, hospital.password);
+            if (isMatch) {
                 return res.status(200).json({
                     message: "Login successful",
                     role: "Hospital",
@@ -73,10 +72,11 @@ export const loginUser = async (req, res) => {
             }
         }
 
-        // 🔹 Patient login (check User collection)
+        // Patient login
         const user = await User.findOne({ email });
         if (user) {
-            if (user.password === password) {
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (isMatch) {
                 return res.status(200).json({
                     message: "Login successful",
                     role: "Patient",
@@ -88,10 +88,8 @@ export const loginUser = async (req, res) => {
             }
         }
 
-        // ❌ If not found in any collection
         return res.status(404).json({ message: "User not found" });
     } catch (error) {
-        console.error("❌ Error logging in:", error);
         res.status(500).json({ message: error.message });
     }
 };

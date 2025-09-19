@@ -1,12 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config({ path: './.env' });
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import connectDb from './db/connect.js';
 import router from './routes/routes.js';
 import hospitalRouter from "./routes/hospitalRoutes.js";
-import noticeRouter from "./routes/NoticeRoutes.js"; // Import noticeRouter
+import noticeRouter from "./routes/NoticeRoutes.js";
 
-dotenv.config();
 connectDb();
 
 const app = express();
@@ -15,8 +16,7 @@ app.use(express.json());
 
 app.use('/api/user', router);
 app.use("/api/hospitals", hospitalRouter);
-app.use("/api/notices", noticeRouter); // Add notice routes
+app.use("/api/notices", noticeRouter);
 
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));
