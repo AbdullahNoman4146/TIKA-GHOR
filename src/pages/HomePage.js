@@ -28,16 +28,6 @@ function HomePage() {
 
   return (
     <div className="home">
-      <nav className="navbar">
-        <div className="nav-left">TIKA GHOR</div>
-        <div className="nav-right">
-          <button onClick={() => navigate("/login")}>Login</button>
-          <button onClick={() => navigate("/notices")}>Notice Panel</button>
-          <button onClick={() => navigate("/vaccine-info")}>Vaccine Information</button>
-          <button onClick={() => { /* place */ }}>Applicable Vaccine</button>
-          <button onClick={() => { /* place */ }}>Vaccine Card Download</button>
-        </div>
-      </nav>
 
       <header className="info">
         <div className="info-image">
@@ -52,7 +42,6 @@ function HomePage() {
           <p>
             Vaccines are a cornerstone of public health, safeguarding individuals and communities from preventable diseases. With TIKA GHOR, managing your vaccination schedule is simple and efficient, ensuring you stay protected.
           </p>
-          <button className="learn-btn">Learn More</button>
         </div>
       </header>
 
@@ -87,19 +76,19 @@ function HomePage() {
             notices.map((notice, index) => (
               <div key={notice._id || index} className="notice">
                 <h4>
-                  {index === 0 ? "🚨 Latest Update" : 
-                   index === 1 ? "📋 Important" : "ℹ️ Information"}
+                  {index === 0 ? "🚨 Latest Update" :
+                    index === 1 ? "📋 Important" : "ℹ️ Information"}
                 </h4>
                 <b>{notice.title}</b>
                 <p>
-                  {notice.content.length > 100 
-                    ? `${notice.content.substring(0, 100)}...` 
+                  {notice.content.length > 100
+                    ? `${notice.content.substring(0, 100)}...`
                     : notice.content
                   }
                 </p>
                 <div className="notice-footer">
                   <span>By: {notice.author}</span>
-                  <button 
+                  <button
                     onClick={() => navigate("/notices")}
                     className="read-more-btn"
                   >
@@ -111,7 +100,7 @@ function HomePage() {
           )}
         </div>
         <div className="view-all-container">
-          <button 
+          <button
             onClick={() => navigate("/notices")}
             className="view-all-btn"
           >
