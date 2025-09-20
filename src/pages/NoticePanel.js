@@ -42,13 +42,10 @@ function NoticePanel() {
     <div className="notice-panel-container">
       <header className="notice-panel-header">
         <h1>📢 Notice Panel</h1>
-        <button className="back-btn" onClick={handleBackToHome}>
-          ← Back to Home
-        </button>
       </header>
-      
+
       <h2 className="notice-panel-title">Latest Vaccine Updates & Announcements</h2>
-      
+
       <div className="notices-list">
         {notices.length === 0 ? (
           <div className="no-notices">

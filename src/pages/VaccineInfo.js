@@ -60,9 +60,6 @@ function VaccineInfo() {
     <div className="vaccine-info-container">
       <header className="vaccine-header">
         <h1>💉 Vaccine Information Center</h1>
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ← Back to Home
-        </button>
       </header>
 
       <div className="vaccine-intro">

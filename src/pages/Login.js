@@ -3,7 +3,7 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Login() {
+function Login({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +15,7 @@ function Login() {
     }
 
     try {
-      //Call backend for login
+      // Call backend for login
       const res = await axios.post("http://localhost:5000/api/user/login", {
         email,
         password,
@@ -24,10 +24,13 @@ function Login() {
       if (res.data) {
         const { email, role, name } = res.data;
 
-        //Save user details in localStorage
+        // Save user details in localStorage
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userRole", role);
         if (name) localStorage.setItem("userName", name);
+
+        // 🔹 Update global login state
+        setIsLoggedIn(true);
 
         // 🔹 Navigate based on backend role
         switch (role) {
