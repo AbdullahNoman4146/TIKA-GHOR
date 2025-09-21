@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Hospital from "../models/Hospital.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Get all users
 export const getUser = async (req, res) => {
@@ -49,24 +50,28 @@ export const loginUser = async (req, res) => {
         const adminPassword = process.env.ADMIN_PASSWORD;
 
         if (email === adminEmail && password === adminPassword) {
-            return res.status(200).json({
-                message: "Login successful",
-                role: "Admin",
-                email,
-            });
+        const token = jwt.sign({ email, role: "Admin" }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        return res.status(200).json({
+            message: "Login successful",
+            role: "Admin",
+            email,
+            token,
+      });
         }
 
         // Hospital login
         const hospital = await Hospital.findOne({ email });
         if (hospital) {
-            const isMatch = await bcrypt.compare(password, hospital.password);
-            if (isMatch) {
-                return res.status(200).json({
-                    message: "Login successful",
-                    role: "Hospital",
-                    email: hospital.email,
-                    name: hospital.name || "Hospital",
-                });
+      const isMatch = await bcrypt.compare(password, hospital.password);
+      if (isMatch) {
+        const token = jwt.sign({ email: hospital.email, role: "Hospital" }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        return res.status(200).json({
+          message: "Login successful",
+          role: "Hospital",
+          email: hospital.email,
+          name: hospital.name || "Hospital",
+          token,
+        });
             } else {
                 return res.status(401).json({ message: "Invalid password" });
             }
@@ -75,15 +80,17 @@ export const loginUser = async (req, res) => {
         // Patient login
         const user = await User.findOne({ email });
         if (user) {
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (isMatch) {
-                return res.status(200).json({
-                    message: "Login successful",
-                    role: "Patient",
-                    email: user.email,
-                    name: user.name,
-                });
-            } else {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (isMatch) {
+            const token = jwt.sign({ email: user.email, role: "Patient" }, process.env.JWT_SECRET, { expiresIn: "1d" });
+            return res.status(200).json({
+            message: "Login successful",
+            role: "Patient",
+          email: user.email,
+          name: user.name,
+          token,
+        });
+      } else {
                 return res.status(401).json({ message: "Invalid password" });
             }
         }

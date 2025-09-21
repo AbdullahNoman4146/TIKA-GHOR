@@ -1,15 +1,11 @@
 import express from "express";
 import { getHospital, saveHospital, getAllHospitals } from "../controllers/hospitalController.js";
+import { authMiddleware, adminOnly } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Get all hospitals (Admin view)
-router.get("/", getAllHospitals);
-
-// Get hospital by email
-router.get("/:email", getHospital);
-
-// Save or update hospital (Admin or hospital itself)
-router.post("/", saveHospital);
+router.get("/", authMiddleware, adminOnly, getAllHospitals); // Only admin
+router.get("/:email", authMiddleware, getHospital); // Only logged-in hospital or admin
+router.post("/", authMiddleware, saveHospital);
 
 export default router;
