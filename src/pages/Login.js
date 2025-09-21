@@ -22,11 +22,12 @@ function Login({ setIsLoggedIn }) {
       });
 
       if (res.data) {
-        const { email, role, name } = res.data;
-
-        // Save user details in localStorage
+        const { email, role, name, token } = res.data;
+        
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userRole", role);
+        localStorage.setItem("token", token);
+
         if (name) localStorage.setItem("userName", name);
 
         // 🔹 Update global login state

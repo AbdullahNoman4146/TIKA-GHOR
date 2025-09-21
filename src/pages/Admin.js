@@ -12,36 +12,45 @@ function Admin() {
 
   // Fetch hospitals
   const fetchHospitals = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/hospitals");
-      const data = await res.json();
-      setHospitals(data);
-    } catch (err) {
-      console.error("❌ Error fetching hospitals:", err);
-    }
-  };
+  try {
+    const res = await fetch("http://localhost:5000/api/hospitals", {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    });
+    const data = await res.json();
+    setHospitals(Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error("❌ Error fetching hospitals:", err);
+    setHospitals([]); // fallback to empty array
+  }
+};
 
-  // Fetch users
   const fetchUsers = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/user");
-      const data = await res.json();
-      setUsers(data);
-    } catch (err) {
-      console.error("❌ Error fetching users:", err);
-    }
-  };
+  try {
+    const res = await fetch("http://localhost:5000/api/user", {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    });
+    const data = await res.json();
+    setUsers(Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error("❌ Error fetching users:", err);
+    setUsers([]);
+  }
+};
 
-  // Fetch notices
-  const fetchNotices = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/notices");
-      const data = await res.json();
-      setNotices(data);
-    } catch (err) {
-      console.error("❌ Error fetching notices:", err);
-    }
-  };
+const fetchNotices = async () => {
+  try {
+    const res = await fetch("http://localhost:5000/api/notices");
+    const data = await res.json();
+    setNotices(Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error("❌ Error fetching notices:", err);
+    setNotices([]);
+  }
+};
 
   useEffect(() => {
     fetchHospitals();
@@ -63,12 +72,13 @@ function Admin() {
       return;
     }
     const res = await fetch("http://localhost:5000/api/hospitals", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newHospital),
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
+  },
+  body: JSON.stringify(newHospital),
+});
     if (res.ok) {
       alert("Hospital added successfully!");
       setNewHospital({ email: "", password: "" });
@@ -89,12 +99,13 @@ function Admin() {
     
     try {
       const res = await fetch("http://localhost:5000/api/notices", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newNotice),
-      });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
+  },
+  body: JSON.stringify(newNotice),
+});
       
       if (res.ok) {
         alert("Notice created successfully!");
@@ -113,8 +124,11 @@ function Admin() {
   const handleRemoveHospital = async (email) => {
     if (!window.confirm("Are you sure?")) return;
     const res = await fetch(`http://localhost:5000/api/hospitals/${email}`, {
-      method: "DELETE",
-    });
+  method: "DELETE",
+  headers: {
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
+  },
+});
     if (res.ok) {
       await fetchHospitals(); //Refresh after delete
     } else {
@@ -126,8 +140,11 @@ function Admin() {
   const handleRemoveUser = async (email) => {
     if (!window.confirm("Are you sure?")) return;
     const res = await fetch(`http://localhost:5000/api/user/${email}`, {
-      method: "DELETE",
-    });
+  method: "DELETE",
+  headers: {
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
+  },
+});
     if (res.ok) {
       await fetchUsers(); //Refresh after delete
     } else {
@@ -141,8 +158,11 @@ function Admin() {
     
     try {
       const res = await fetch(`http://localhost:5000/api/notices/${id}`, {
-        method: "DELETE",
-      });
+  method: "DELETE",
+  headers: {
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
+  },
+});
       
       if (res.ok) {
         await fetchNotices(); // Refresh notices list

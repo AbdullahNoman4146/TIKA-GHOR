@@ -9,23 +9,27 @@ function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    if (!email) {
-      setLoading(false);
-      return;
-    }
+  const email = localStorage.getItem("userEmail");
+  if (!email) {
+    setLoading(false);
+    return;
+  }
 
-    axios
-      .get(`http://localhost:5000/api/user/${email}`)
-      .then((res) => {
-        setUser(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("❌ Error fetching user:", err);
-        setLoading(false);
-      });
-  }, []);
+  axios
+    .get(`http://localhost:5000/api/user/${email}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    .then((res) => {
+      setUser(res.data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("❌ Error fetching user:", err);
+      setLoading(false);
+    });
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("userEmail");

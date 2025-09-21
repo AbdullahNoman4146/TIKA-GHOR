@@ -28,11 +28,15 @@ function Hospital() {
       }
 
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/hospitals/${encodeURIComponent(
-            storedEmail
-          )}`
-        );
+        const res = await axios.post(
+  "http://localhost:5000/api/hospitals",
+  payload,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
+);
         const data = res.data;
 
         if (!data) {
