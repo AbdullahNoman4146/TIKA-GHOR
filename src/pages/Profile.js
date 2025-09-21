@@ -27,7 +27,23 @@ function Profile({ setIsLoggedIn }) {
     })
     .catch((err) => {
       console.error("❌ Error fetching user:", err);
-      setLoading(false);
+      // If unauthorized or user not found, log out and reset state
+      if (
+        err.response &&
+        (err.response.status === 401 ||
+          err.response.status === 403 ||
+          err.response.status === 404)
+      ) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userName");
+        if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+        navigate("/login");
+      } else {
+        setLoading(false);
+      }
     });
 }, []);
 

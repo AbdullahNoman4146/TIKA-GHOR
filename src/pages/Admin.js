@@ -10,33 +10,56 @@ function Admin({ setIsLoggedIn }) {
   const [newNotice, setNewNotice] = useState({ title: "", content: "", author: "" });
   const navigate = useNavigate();
 
-  // Fetch hospitals
-  const fetchHospitals = async () => {
+  const handleAuthError = (err) => {
+  if (
+    err.status === 401 ||
+    err.status === 403 ||
+    err.status === 404
+  ) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userName");
+    if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+    navigate("/login");
+  }
+};
+
+const fetchHospitals = async () => {
   try {
     const res = await fetch("http://localhost:5000/api/hospitals", {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     });
+    if (!res.ok) {
+      handleAuthError({ status: res.status });
+      setHospitals([]);
+      return;
+    }
     const data = await res.json();
     setHospitals(Array.isArray(data) ? data : []);
   } catch (err) {
-    console.error("❌ Error fetching hospitals:", err);
-    setHospitals([]); // fallback to empty array
+    setHospitals([]);
   }
 };
 
-  const fetchUsers = async () => {
+const fetchUsers = async () => {
   try {
     const res = await fetch("http://localhost:5000/api/user", {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     });
+    if (!res.ok) {
+      handleAuthError({ status: res.status });
+      setUsers([]);
+      return;
+    }
     const data = await res.json();
     setUsers(Array.isArray(data) ? data : []);
   } catch (err) {
-    console.error("❌ Error fetching users:", err);
     setUsers([]);
   }
 };
