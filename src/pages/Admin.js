@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Admin.css";
 import { useNavigate } from "react-router-dom";
 
-function Admin() {
+function Admin({ setIsLoggedIn }) {
   const [hospitals, setHospitals] = useState([]);
   const [users, setUsers] = useState([]);
   const [notices, setNotices] = useState([]);
@@ -60,10 +60,14 @@ const fetchNotices = async () => {
 
   // ✅ Logout function
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("userEmail");
-    navigate("/login");
-  };
+  localStorage.removeItem("token");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("user");
+  localStorage.removeItem("userName");
+  if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+  navigate("/login");
+}
 
   // Add new hospital
   const handleAddHospital = async () => {

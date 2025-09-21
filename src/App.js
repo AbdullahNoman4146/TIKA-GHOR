@@ -13,22 +13,22 @@ import VaccineInfo from "./pages/VaccineInfo";
 import ApplicableVaccine from "./pages/ApplicableVaccine";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   return (
     <Router>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/hospital" element={<Hospital />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/notices" element={<NoticePanel />} />
-        <Route path="/vaccine-info" element={<VaccineInfo />} />
-        <Route path="/applicable-vaccine" element={<ApplicableVaccine />} />
-      </Routes>
+  <Route path="/" element={<HomePage />} />
+  <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+  <Route path="/hospital" element={<Hospital setIsLoggedIn={setIsLoggedIn} />} />
+  <Route path="/signup" element={<Signup />} />
+  <Route path="/profile" element={<Profile setIsLoggedIn={setIsLoggedIn} />} />
+  <Route path="/admin" element={<Admin setIsLoggedIn={setIsLoggedIn} />} />
+  <Route path="/notices" element={<NoticePanel />} />
+  <Route path="/vaccine-info" element={<VaccineInfo />} />
+  <Route path="/applicable-vaccine" element={<ApplicableVaccine />} />
+</Routes>
     </Router>
   );
 }

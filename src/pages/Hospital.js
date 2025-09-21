@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Hospital.css";
 
-function Hospital() {
+function Hospital({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("userEmail") || "";
   const [loading, setLoading] = useState(true);
@@ -21,51 +21,50 @@ function Hospital() {
   });
 
   useEffect(() => {
-    const fetchHospital = async () => {
-      if (!storedEmail) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const res = await axios.post(
-  "http://localhost:5000/api/hospitals",
-  payload,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
+  const fetchHospital = async () => {
+    if (!storedEmail) {
+      setLoading(false);
+      return;
     }
-  }
-);
-        const data = res.data;
 
-        if (!data) {
-          setIsEditing(true);
-          setForm((f) => ({ ...f, email: storedEmail }));
-        } else {
-          setHospital(data);
-          setForm({
-            email: data.email || storedEmail,
-            name: data.name || "",
-            address: data.address || "",
-            contact: data.contact || "",
-            vaccinesText: (data.availableVaccines || []).join(", "),
-            openingHours: data.openingHours || "",
-            photo: data.photo || "",
-          });
-          setIsEditing(false);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/hospitals/${storedEmail}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
         }
-      } catch (err) {
-        console.warn("Could not fetch hospital data:", err.message);
+      );
+      const data = res.data;
+
+      if (!data) {
         setIsEditing(true);
         setForm((f) => ({ ...f, email: storedEmail }));
-      } finally {
-        setLoading(false);
+      } else {
+        setHospital(data);
+        setForm({
+          email: data.email || storedEmail,
+          name: data.name || "",
+          address: data.address || "",
+          contact: data.contact || "",
+          vaccinesText: (data.availableVaccines || []).join(", "),
+          openingHours: data.openingHours || "",
+          photo: data.photo || "",
+        });
+        setIsEditing(false);
       }
-    };
+    } catch (err) {
+      console.warn("Could not fetch hospital data:", err.message);
+      setIsEditing(true);
+      setForm((f) => ({ ...f, email: storedEmail }));
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchHospital();
-  }, [storedEmail]);
+  fetchHospital();
+}, [storedEmail]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,9 +136,14 @@ function Hospital() {
 
   // 🔹 Logout function
   const handleLogout = () => {
-    localStorage.removeItem("userEmail");
-    navigate("/login");
-  };
+  localStorage.removeItem("token");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("user");
+  localStorage.removeItem("userName");
+  if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+  navigate("/login");
+}
 
   if (loading) {
     return (
