@@ -20,7 +20,24 @@ function Hospital({ setIsLoggedIn }) {
     photo: "",
   });
 
-  useEffect(() => {
+  const handleAuthError = (err) => {
+  if (
+    err.response &&
+    (err.response.status === 401 ||
+      err.response.status === 403 ||
+      err.response.status === 404)
+  ) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userName");
+    if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+    navigate("/login");
+  }
+};
+
+useEffect(() => {
   const fetchHospital = async () => {
     if (!storedEmail) {
       setLoading(false);
@@ -55,7 +72,7 @@ function Hospital({ setIsLoggedIn }) {
         setIsEditing(false);
       }
     } catch (err) {
-      console.warn("Could not fetch hospital data:", err.message);
+      handleAuthError(err);
       setIsEditing(true);
       setForm((f) => ({ ...f, email: storedEmail }));
     } finally {
