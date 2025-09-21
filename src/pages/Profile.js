@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
 
-function Profile() {
+function Profile({ setIsLoggedIn }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -32,10 +32,14 @@ function Profile() {
 }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("userEmail");
-    navigate("/login");
-  };
-
+  localStorage.removeItem("token");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("user");
+  localStorage.removeItem("userName");
+  if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+  navigate("/login");
+}
   if (loading) return <h2 className="loading">Loading...</h2>;
   if (!user) return <h2 className="loading">No user found</h2>;
 
