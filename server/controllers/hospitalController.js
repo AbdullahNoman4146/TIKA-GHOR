@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 // Get all hospitals (exclude admin)
 export const getAllHospitals = async (req, res) => {
     try {
-        const hospitals = await Hospital.find({ email: { $ne: "admin@tikaghor.com" } });
+        const hospitals = await Hospital.find({
+            email: { $ne: "admin@tikaghor.com" },
+        });
         res.status(200).json(hospitals);
     } catch (err) {
         console.error("❌ Error fetching hospitals:", err);
@@ -37,7 +39,9 @@ export const saveHospital = async (req, res) => {
 
         // 🔹 Block creating admin as hospital
         if (email === "admin@tikaghor.com") {
-            return res.status(403).json({ message: "Cannot create admin in hospitals" });
+            return res
+                .status(403)
+                .json({ message: "Cannot create admin in hospitals" });
         }
 
         let hospital = await Hospital.findOne({ email });
@@ -46,16 +50,29 @@ export const saveHospital = async (req, res) => {
             // Update existing hospital
             let hashedPassword = hospital.password;
 
-            if (password && !(await bcrypt.compare(password, hospital.password))) {
+            if (
+                password &&
+                !(await bcrypt.compare(password, hospital.password))
+            ) {
                 hashedPassword = await bcrypt.hash(password, 10);
             }
 
-            hospital.set({ ...req.body, password: hashedPassword });
+            hospital.set({
+                ...req.body,
+                ...(hashedPassword && { password: hashedPassword }),
+            });
             await hospital.save();
         } else {
             // Create new hospital
-            const hashedPassword = await bcrypt.hash(password, 10);
-            hospital = new Hospital({ ...req.body, password: hashedPassword });
+            let hashedPassword;
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, 10);
+            }
+
+            hospital = new Hospital({
+                ...req.body,
+                ...(hashedPassword && { password: hashedPassword }),
+            });
             await hospital.save();
         }
 
