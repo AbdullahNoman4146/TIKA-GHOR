@@ -21,67 +21,67 @@ function Hospital({ setIsLoggedIn }) {
   });
 
   const handleAuthError = (err) => {
-  if (
-    err.response &&
-    (err.response.status === 401 ||
-      err.response.status === 403 ||
-      err.response.status === 404)
-  ) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("user");
-    localStorage.removeItem("userName");
-    if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
-    navigate("/login");
-  }
-};
-
-useEffect(() => {
-  const fetchHospital = async () => {
-    if (!storedEmail) {
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/api/hospitals/${storedEmail}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        }
-      );
-      const data = res.data;
-
-      if (!data) {
-        setIsEditing(true);
-        setForm((f) => ({ ...f, email: storedEmail }));
-      } else {
-        setHospital(data);
-        setForm({
-          email: data.email || storedEmail,
-          name: data.name || "",
-          address: data.address || "",
-          contact: data.contact || "",
-          vaccinesText: (data.availableVaccines || []).join(", "),
-          openingHours: data.openingHours || "",
-          photo: data.photo || "",
-        });
-        setIsEditing(false);
-      }
-    } catch (err) {
-      handleAuthError(err);
-      setIsEditing(true);
-      setForm((f) => ({ ...f, email: storedEmail }));
-    } finally {
-      setLoading(false);
+    if (
+      err.response &&
+      (err.response.status === 401 ||
+        err.response.status === 403 ||
+        err.response.status === 404)
+    ) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("user");
+      localStorage.removeItem("userName");
+      if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+      navigate("/login");
     }
   };
 
-  fetchHospital();
-}, [storedEmail]);
+  useEffect(() => {
+    const fetchHospital = async () => {
+      if (!storedEmail) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/hospitals/${storedEmail}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          }
+        );
+        const data = res.data;
+
+        if (!data) {
+          setIsEditing(true);
+          setForm((f) => ({ ...f, email: storedEmail }));
+        } else {
+          setHospital(data);
+          setForm({
+            email: data.email || storedEmail,
+            name: data.name || "",
+            address: data.address || "",
+            contact: data.contact || "",
+            vaccinesText: (data.availableVaccines || []).join(", "),
+            openingHours: data.openingHours || "",
+            photo: data.photo || "",
+          });
+          setIsEditing(false);
+        }
+      } catch (err) {
+        handleAuthError(err);
+        setIsEditing(true);
+        setForm((f) => ({ ...f, email: storedEmail }));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHospital();
+  }, [storedEmail]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,7 +109,12 @@ useEffect(() => {
 
       const res = await axios.post(
         "http://localhost:5000/api/hospitals",
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // ✅ Added token
+          },
+        }
       );
 
       setHospital(res.data);
@@ -117,7 +122,14 @@ useEffect(() => {
       alert("Hospital information saved successfully.");
     } catch (err) {
       console.error("Error saving hospital:", err);
-      alert("Failed to save hospital information.");
+      if (err.response && err.response.status === 401) {
+        alert("Unauthorized! Please log in again.");
+        localStorage.clear();
+        if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+        navigate("/login");
+      } else {
+        alert("Failed to save hospital information.");
+      }
     }
   };
 
@@ -153,14 +165,14 @@ useEffect(() => {
 
   // 🔹 Logout function
   const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("userEmail");
-  localStorage.removeItem("userRole");
-  localStorage.removeItem("user");
-  localStorage.removeItem("userName");
-  if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
-  navigate("/login");
-}
+    localStorage.removeItem("token");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userName");
+    if (typeof setIsLoggedIn === "function") setIsLoggedIn(false);
+    navigate("/login");
+  }
 
   if (loading) {
     return (
