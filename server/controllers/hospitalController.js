@@ -14,6 +14,20 @@ export const getAllHospitals = async (req, res) => {
     }
 };
 
+// Get all hospitals for patients (public, no auth required)
+export const getAllHospitalsPublic = async (req, res) => {
+    try {
+        const hospitals = await Hospital.find(
+            { email: { $ne: "admin@tikaghor.com" } },
+            "name address contact availableVaccines openingHours"
+        );
+        res.status(200).json(hospitals);
+    } catch (err) {
+        console.error("❌ Error fetching hospitals (public):", err);
+        res.status(500).json({ message: err.message });
+    }
+};
+
 // Get hospital info by email (admin won't exist in DB)
 export const getHospital = async (req, res) => {
     try {
